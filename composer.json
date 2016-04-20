@@ -1,11 +1,11 @@
 {
-	"name"             : "and/dpd-shipping-api",
+	"name"             : "gyorgygilanyi/dpd-shipping-api",
 	"description"      : "API for DPD shipping",
 	"license"          : "GPL-3.0",
 	"authors"          : [
 		{
-			"name" : "And",
-			"email": "and.webdev@gmail.com"
+			"name" : "GYG",
+			"email": "gyg.dev@gmail.com"
 		}
 	],
 	"minimum-stability": "dev",
