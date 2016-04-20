@@ -42,9 +42,28 @@ class API {
 
 		return ! empty($json['errmsg']) ? $json['errmsg'] : $json[ 'parcel_status' ];
 	}
+	
+	public function getParcelLabels($username, $password, $parcels ) {
+		$form = array();
+		$form['username'] = $username;
+		$form['password'] = $password;
+		//Parcel number list, separated with ‘|’. Example: 16401234567890|16401234567891|16401122334455
+		$form['parcels'] = implode("|", $parcels);
+		
+		$url  = 'https://weblabel.dpd.hu/dpd_wow/parcel_print.php';
+		$json = $this->requestJsonLabel($url, $form, 'POST', array('content-type' => 'application/x-www-form-urlencoded'));
+		$json = array_merge(array(
+			'status'	=> 'ok',
+			'errlog'	=> NULL,
+			'pdf'		=> ''
+		), $json);
+		
+		return $json;
+	}
 
-	public function getTrackingUrl($parcel_number, $language = 'en') {
-		return "https://tracking.dpd.de/cgi-bin/delistrack?pknr=$parcel_number&lang=$language";
+	public function getTrackingUrl($parcel_number, $language = 'hu_HU') {
+		//return "https://tracking.dpd.de/cgi-bin/delistrack?pknr=$parcel_number&lang=$language";
+		return "https://tracking.dpd.de/parcelstatus?query=$parcel_number&locale=$language";
 	}
 
 	protected function validateForm(Form $form) {
@@ -55,16 +74,30 @@ class API {
 		return $form;
 	}
 
-	protected function requestJson($url, $data = array(), $method = 'GET', array $headers = array()) {
+	protected function requestJson($url, $data = array(), $method = 'POST', array $headers = array()) {
 		$content = $this->request($url, $data, $method, $headers);
 		$json    = json_decode($this->request($url, $data, $method, $headers), TRUE);
 		if (!$json) $json = array('errlog' => $content, 'status' => 'err');
 		return $json;
 	}
+	
+	protected function requestJsonLabel($url, $data = array(), $method = 'POST', array $headers = array()) {
+		$content = $this->request($url, $data, $method, $headers);
+		$json    = json_decode($this->request($url, $data, $method, $headers), TRUE);
+		if(!$json) {
+			if (substr( $content, 0, 4 ) == '%PDF') {
+				$json = array('status' => 'ok', 'errlog' => NULL, 'pdf' => $content);
+			} else {
+				$json = array('errlog' => $content, 'status' => 'err');
+			}
+		}
+		return $json;
+	}
 
-	protected function request($url, $data = array(), $method = 'GET', array $headers = array()) {
+	protected function request($url, $data = array(), $method = 'POST', array $headers = array()) {
 		if ($data instanceof Form) $data = $data->toArray();
 		$client = new Curl();
+		$client->setTimeout(100);
 		$client->setVerifyPeer(FALSE);
 		$browser  = new Browser($client);
 		$response = $browser->submit($url, $data, $method, $headers);
