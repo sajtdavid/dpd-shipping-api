@@ -10,3 +10,6 @@ DPD shipping API for hungarian DPD Weblabel webservice interface
 
 @ 2017.02.15.
 + add: Parcel delete support
+
+@ 2017.05.22.
++ add: Support for idm sms number
