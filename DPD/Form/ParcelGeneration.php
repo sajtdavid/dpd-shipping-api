@@ -76,7 +76,7 @@ class ParcelGeneration extends Form {
 	protected $phone;
     /**
      * Recipient sms number
-     * @Assert\Length(max = 50)
+     * @Assert\Length(max = 30)
      */
     protected $idm_sms_number;
 	/**
