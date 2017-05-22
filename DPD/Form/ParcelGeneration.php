@@ -74,6 +74,11 @@ class ParcelGeneration extends Form {
 	 * @Assert\Length(max = 50)
 	 */
 	protected $phone;
+    /**
+     * Recipient sms number
+     * @Assert\Length(max = 50)
+     */
+    protected $idm_sms_number;
 	/**
 	 * Delivery instructions for courier
 	 * @Assert\Length(max = 100)
@@ -407,6 +412,20 @@ class ParcelGeneration extends Form {
 
 		return $this;
 	}
+
+    /**
+     * Set idm-sms-number
+     *
+     * @param mixed $idm_sms_number
+     * @return $this
+     */
+    public function setSMSNumber($idm_sms_number) {
+        $this->idm_sms_number = $idm_sms_number;
+
+        return $this;
+    }
+
+
 
 	/**
 	 * Set pickup_date
