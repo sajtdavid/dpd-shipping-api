@@ -4,6 +4,11 @@
 	"license"          : "GPL-3.0",
 	"authors"          : [
 		{
+			"name"    : "schiggi",
+			"email": "alex@schikalow.de",
+			"homepage": "http://schikalow.de/"
+		},
+		{
 			"name" : "GYG",
 			"email": "gyg.dev@gmail.com"
 		}
