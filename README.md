@@ -7,3 +7,6 @@ DPD shipping API for hungarian DPD Weblabel webservice interface
 + add: Get Parcel Label
 + mod: GET to POST
 + mod: Tracking to hungarian, new url
+
+@ 2017.02.15.
++ add: Parcel delete support
