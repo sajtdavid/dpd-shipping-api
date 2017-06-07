@@ -11,29 +11,36 @@ $api = new DPD\API();
 $numbers = $api->generateParcel(DPD\Form\ParcelGeneration::newInstance()
     ->setUsername('demo')
     ->setPassword('o2Ijwe2')
-    ->setName1('And')
+    ->setName1('Alex')
     ->setStreet('Kesmark u 4')
     ->setCity('Budapest')
     ->setCountry('HU')
     ->setPcode('1158')
     ->setWeight('1')
     ->setNumOfParcel(1)
-    ->setParcelType('D')
+    ->setParcelType('BC')
+//    ->setOrderNumber('1234')
+    ->setCodAmount('')
+    ->setCodPurpose('')
+    ->setEmail('test@test.de')
+    ->setPhone('0636516516')
+    ->setSMSNumber('0636516516')
+    ->setRemark(substr('Hasdsadsaihlnwfwe', 0, 100))
 );
 
 echo 'Number is: ' . $numbers[0] . '<br>';
 
 
 // Parcel status test
-echo 'Status is: ' . $api->getParcelStatus('FcJyN7vU7WKPtUh7m1bx', $numbers[0]).'<br>';
+//echo 'Status is: ' . $api->getParcelStatus('FcJyN7vU7WKPtUh7m1bx', $numbers[0]).'<br>';
 
 
 // Parcel delete test
-$parcel_delete_result = $api->deleteParcel(DPD\Form\ParcelDelete::newInstance()
-    ->setUsername('demo')
-    ->setPassword('o2Ijwe2')
-    ->setParcels($numbers[0])
-);
-
-echo "delete result: " . print_r(var_dump($parcel_delete_result), true);
+//$parcel_delete_result = $api->deleteParcel(DPD\Form\ParcelDelete::newInstance()
+//    ->setUsername('demo')
+//    ->setPassword('o2Ijwe2')
+//    ->setParcels($numbers[0])
+//);
+//
+//echo "delete result: " . print_r(var_dump($parcel_delete_result), true);
 

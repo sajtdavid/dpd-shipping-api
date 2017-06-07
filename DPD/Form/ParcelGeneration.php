@@ -414,7 +414,7 @@ class ParcelGeneration extends Form {
 	}
 
     /**
-     * Set idm-sms-number
+     * Set idm_sms_number
      *
      * @param mixed $idm_sms_number
      * @return $this
