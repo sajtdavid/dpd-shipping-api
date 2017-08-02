@@ -446,7 +446,7 @@ class ParcelGeneration extends Form {
 	 * @return $this
 	 */
 	public function setRemark($remark) {
-		$this->remark = $remark;
+		$this->remark = substr($remark, 0, 100);
 
 		return $this;
 	}

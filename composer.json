@@ -1,24 +1,24 @@
 {
 	"name"             : "schiggi/dpd-shipping-api",
-	"description"      : "API for DPD shipping",
+	"description"      : "API for DPD HU shipping",
 	"license"          : "GPL-3.0",
 	"authors"          : [
 		{
 			"name"    : "schiggi",
 			"email": "alex@schikalow.de",
 			"homepage": "http://schikalow.de/"
-		},
-		{
-			"name" : "GYG",
-			"email": "gyg.dev@gmail.com"
 		}
 	],
 	"minimum-stability": "dev",
 	"require"          : {
 		"php"               : ">=5.3.3",
-		"symfony/validator" : "~2.3.3",
-		"doctrine/common"   : "~2.4",
-		"kriswallsmith/buzz": "~0.10"
+		"symfony/validator" : "~3.3.6",
+		"doctrine/common"   : "~2.8",
+		"guzzlehttp/guzzle": "^6.0",
+		"symfony/options-resolver": "^3.0",
+		"tightenco/collect":"^5.4",
+		"monolog/monolog":"^1.23"
+
 	},
 	"autoload"         : {
 		"psr-0": {
