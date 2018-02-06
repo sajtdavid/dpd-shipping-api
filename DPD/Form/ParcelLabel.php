@@ -22,11 +22,11 @@ class ParcelLabel extends Form {
      */
     protected $password;
 
-	/**
-	 * @Assert\NotBlank
-	 * @Assert\Length(max = 200)
-	 */
-	protected $parcels;
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(max = 200)
+     */
+    protected $parcels;
 
     /**
      * Set username
@@ -56,12 +56,10 @@ class ParcelLabel extends Form {
      * Set parcel_number
      *
      * @param mixed $parcel_numbers Array or string
-     *
      * @return $this
      */
     public function setParcels($parcels)
     {
-
         if (is_array($parcels)) {
             $parcels = implode('|', $parcels);
         }

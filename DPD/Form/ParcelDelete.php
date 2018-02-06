@@ -5,9 +5,7 @@ namespace DPD\Form;
 use DPD\Form;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class ParcelDelete extends Form
-{
-
+class ParcelLabel extends Form {
     /**
      * client’s weblabel username
      *
@@ -25,52 +23,43 @@ class ParcelDelete extends Form
     protected $password;
 
     /**
-     * Parcels to be delete
-     *
      * @Assert\NotBlank
      * @Assert\Length(max = 200)
      */
     protected $parcels;
 
     /**
+     * Set username
+     *
+     * @param mixed $username
+     * @return $this
+     */
+    public function setUsername($username) {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
      * Set password
      *
      * @param mixed $password
-     *
      * @return $this
      */
-    public function setPassword($password)
-    {
+    public function setPassword($password) {
         $this->password = $password;
 
         return $this;
     }
 
     /**
-     * Set username
-     *
-     * @param mixed $username
-     *
-     * @return $this
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
-
-    /**
      * Set parcel_number
      *
      * @param mixed $parcel_numbers Array or string
-     *
      * @return $this
      */
     public function setParcels($parcels)
     {
-
         if (is_array($parcels)) {
             $parcels = implode('|', $parcels);
         }
@@ -79,5 +68,4 @@ class ParcelDelete extends Form
 
         return $this;
     }
-
 }

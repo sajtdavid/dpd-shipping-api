@@ -12,4 +12,3 @@ abstract class Response extends Exception {
 		parent::__construct($string);
 	}
 }
- 
