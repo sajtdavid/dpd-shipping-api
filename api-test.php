@@ -6,27 +6,28 @@ if (is_file(__DIR__ . '/vendor/autoload.php')) {
 
 $api = new DPD\API([
     'username' => 'demo',
-    'password' => 'o2Ijwe2',
+    'password' => 'o2Ijwe2!',
     'log_dir'  => dirname(__FILE__).'/'
 ]);
 
 // Parcel generation test
-$parcel_generate = DPD\Form\ParcelGeneration::newInstance()
-    ->setName1('Alex')
-    ->setStreet('Kesmark u 4')
-    ->setCity('Budapest')
-    ->setCountry('HU')
-    ->setPcode('1158')
-    ->setWeight('1')
-    ->setNumOfParcel(1)
-    ->setParcelType('BC')
-//    ->setOrderNumber('1234')
-    ->setCodAmount('')
-    ->setCodPurpose('')
-    ->setEmail('test@test.de')
-    ->setPhone('0636516516')
-    ->setSMSNumber('0636516516')
-    ->setRemark('Hasdsadsaihlnwfwe');
+$parcel_generate = array(
+        'setName1' => 'Alex',
+        'setStreet' => 'Kesmark u 4',
+        'setCity' => 'Budapest',
+        'setCountry' => 'HU',
+        'setPcode' => '1158',
+        'setWeight' => '1',
+        'setNumOfParcel' => 1,
+        'setParcelType' => 'BC',
+        'setOrderNumber' => '1234',
+        'setCodAmount' => '',
+        'setCodPurpose' => '',
+        'setEmail' => 'test@test.de',
+        'setPhone' => '0636516516',
+        'setSMSNumber' => '0636516516',
+        'setRemark' => 'Customer comments',
+    );
 
 $parcel_number = $api->generateParcel($parcel_generate);
 

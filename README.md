@@ -44,7 +44,7 @@ You need to specific a log dir and optionally a message format when creating a n
 
   $api = new DPD\API([
       'username' => 'demo',
-      'password' => 'o2Ijwe2',
+      'password' => 'o2Ijwe2!',
       'log_dir'  => dirname(__FILE__).'/',
       'log_msg_format' => [
         '{method} {uri} HTTP/{version} {req_body}',
@@ -61,22 +61,23 @@ You need to specific a log dir and optionally a message format when creating a n
 ```php
 <?php
 // Parcel generation. Data will be validated before sending.
-$parcel_generate = DPD\Form\ParcelGeneration::newInstance()
-    ->setName1('Alex')
-    ->setStreet('Kesmark u 4')
-    ->setCity('Budapest')
-    ->setCountry('HU')
-    ->setPcode('1158')
-    ->setWeight('1')
-    ->setNumOfParcel(1)
-    ->setParcelType('BC')
-    ->setOrderNumber('1234')
-    ->setCodAmount('')
-    ->setCodPurpose('')
-    ->setEmail('test@test.de')
-    ->setPhone('0636516516')
-    ->setSMSNumber('0636516516')
-    ->setRemark('Customer comments'); // Max length 100 chars. Will be normalized through the API
+$parcel_generate = array(
+    'setName1' => 'Alex',
+    'setStreet' => 'Kesmark u 4',
+    'setCity' => 'Budapest',
+    'setCountry' => 'HU',
+    'setPcode' => '1158',
+    'setWeight' => '1',
+    'setNumOfParcel' => 1,
+    'setParcelType' => 'BC',
+    'setOrderNumber' => '1234',
+    'setCodAmount' => '',
+    'setCodPurpose' => '',
+    'setEmail' => 'test@test.de',
+    'setPhone' => '0636516516',
+    'setSMSNumber' => '0636516516',
+    'setRemark' => 'Customer comments',
+    ); // Max length 100 chars. Will be normalized through the API
 
 // Will return the parcel number from DPD or error message
 $parcel_number = $api->generateParcel($parcel_generate);
@@ -84,16 +85,28 @@ $parcel_number = $api->generateParcel($parcel_generate);
 
 ### Print labels for saved parcels
 
-TBD
+```php
+<?php
+// Array of parcel numbers from DPD. Can also be a string with one number
+$parcel_array = array('123456789','987654321');
+
+// Returns json array with success message and pdf stream
+$parcel_response_json = $api->getParcelLabels($parcel_array);
+
+// Echo to get pdf stream
+header("Content-type:application/pdf");
+echo $parcel_response_json['pdf'];
+
+```
 
 ### Delete parcel
 
 ```php
 <?php
-// Array of parcel numbers. Can also be a string with one number
-$parcel_array = (DPD\Form\ParcelDelete::newInstance()->setParcels($numbers));
+// Array of parcel numbers from DPD. Can also be a string with one number
+$parcel_array = array('123456789','987654321');
 
-// Returns array with status message
+// Returns json array with success message
 $parcel_delete_status = $api->deleteParcel($parcel_array);
 
 ```
@@ -112,23 +125,6 @@ $number_parcels_sent = $api->transferData();
 ```php
 <?php
 // returns status message as string for parcel_number. One number at a time.
-$status_msg = $api->getParcelStatus($parcel_number);
+$status_msg = $api->getParcelStatus('123456789');
 
 ```
-
-## Changelog
-
-@ 2016.04.21.
-+ add: Get Parcel Label
-+ mod: GET to POST
-+ mod: Tracking to hungarian, new url
-
-@ 2017.02.15.
-+ add: Parcel delete support
-
-@ 2017.05.22.
-+ add: Support for idm sms number
-
-@ 2017.08.03.
-+ mod: changed http client from buzz to Guzzle v6
-+ mod: rewrote request and error handling 
