@@ -1,4 +1,4 @@
-dpd-shipping-api
+dpd-shipping-api for Laravel
 ================
 
 DPD shipping API for Hungarian DPD Weblabel webservice interface via POST requests
