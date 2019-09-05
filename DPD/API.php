@@ -24,6 +24,8 @@ class API
             'debug' => false
         ];
 
+        $this->config = $options;
+
         $this->client = new Client($config_array);
     }
 
