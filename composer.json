@@ -1,5 +1,5 @@
 {
-	"name"             : "schiggi/dpd-shipping-api",
+	"name"             : "sajtdavid/dpd-shipping-api",
 	"description"      : "API for DPD HU shipping",
 	"license"          : "GPL-3.0",
 	"authors"          : [
