@@ -12,12 +12,7 @@
 	"minimum-stability": "dev",
 	"require"          : {
 		"php"               : ">=5.3.3",
-		"symfony/validator" : "~3.3.6",
-		"doctrine/common"   : "~2.8",
-		"guzzlehttp/guzzle": "^6.0",
-		"symfony/options-resolver": "^3.0",
-		"tightenco/collect":"^5.4",
-		"monolog/monolog":"^1.23"
+
 
 	},
 	"autoload"         : {
