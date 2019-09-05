@@ -11,9 +11,7 @@
 	],
 	"minimum-stability": "dev",
 	"require"          : {
-		"php"               : ">=5.3.3",
-		"guzzlehttp/guzzle": "^6.0",
-		"monolog/monolog":"^1.23"
+		"php"               : ">=5.3.3"
 	},
 	"autoload"         : {
 		"psr-0": {
