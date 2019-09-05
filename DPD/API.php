@@ -2,17 +2,11 @@
 
 namespace DPD;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Symfony\Component\Validator\Validation;
 use GuzzleHttp\Client;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use DPD\Exception\RequestErrorException;
 use DPD\Exception\JSONParseException;
 
-// Validation autoloading
-AnnotationRegistry::registerLoader(function ($name) {
-    return class_exists($name);
-});
+
 class API
 {
     private $client;
@@ -24,33 +18,15 @@ class API
      */
     public function __construct($options)
     {
-        $this->config = $this->resolveOptions($options);
         $config_array = [
             'verify' => false,
-            'base_uri' => $this->config['url'],
+            'base_uri' => 'https://weblabel.dpd.hu/dpd_wow/',
             'debug' => false
         ];
-        if (!empty($this->config['log_dir'])) {
-            $config_array['handler'] = $this->createLoggingHandlerStack($this->config['log_msg_format']);
-        }
 
         $this->client = new Client($config_array);
     }
 
-    /**
-     * Get required options for the DPD API to work
-     * @param $opts
-     * @return mixed
-     */
-    protected function resolveOptions($opts)
-    {
-        $resolver = new OptionsResolver();
-        $resolver->setDefault('url', 'https://weblabel.dpd.hu/dpd_wow/');
-        $resolver->setDefault('log_dir', '');
-        $resolver->setDefault('log_msg_format', ['{method} {uri} HTTP/{version} {req_body}','RESPONSE: {code} - {res_body}',]);
-        $resolver->setRequired(['url', 'username', 'password']);
-        return $resolver->resolve($opts);
-    }
 
     /**
      * @param array $parcel_data
@@ -85,7 +61,6 @@ class API
         $form->setUsername($this->config['username']);
         $form->setPassword($this->config['password']);
 
-        $this->validateForm($form);
         $uri = 'parcel_import.php';
         $json = $this->request($uri, $form, 'POST', array('content-type' => 'application/x-www-form-urlencoded'));
         $json = array_merge(array(
@@ -114,7 +89,6 @@ class API
         $form = Form\ParcelStatus::newInstance();
         $form->setSecret($secret);
         $form->setParcelNumber($parcel_number);
-        $this->validateForm($form);
 
         $url = 'parcel_status.php';
         $json = $this->request($url, $form);
@@ -142,8 +116,6 @@ class API
         $form->setUsername($this->config['username']);
         $form->setPassword($this->config['password']);
         $form->setParcels($parcels);
-
-        $this->validateForm($form);
 
         $url = 'parcel_print.php';
         $json = $this->requestJsonLabel($url, $form);
@@ -178,8 +150,6 @@ class API
         $form->setPassword($this->config['password']);
         $form->setParcels($parcels);
 
-        $this->validateForm($form);
-
         $uri = 'parcel_delete.php';
         $json = $this->request($uri, $form);
 
@@ -210,32 +180,12 @@ class API
         $form->setUsername($this->config['username']);
         $form->setPassword($this->config['password']);
 
-        $this->validateForm($form);
-
         $uri = 'parcel_datasend.php';
         $json = $this->request($uri, $form);
         if ('ok' != $json['status']) {
             throw new Exception($json['errlog'], json_encode($json));
         }
         return $json['parcels'];
-    }
-
-    /**
-     * @param Form $form
-     *
-     * @throws Exception\Validation
-     *
-     * @return Form $form
-     */
-    protected function validateForm(Form $form)
-    {
-        $validator = Validation::createValidatorBuilder()->enableAnnotationMapping()->getValidator();
-        $violations = $validator->validate($form);
-        if ($violations->count()) {
-            throw new Exception\Validation($violations);
-        }
-
-        return $form;
     }
 
     /**
@@ -293,41 +243,5 @@ class API
         }
 
         return $jsonData;
-    }
-
-    /**
-     *	Logger functionality: Creates a log file for each day with all requests and responses
-     */
-    private function getLogger()
-    {
-        if (empty($this->logger)) {
-            $this->logger = with(new \Monolog\Logger('api-consumer'))->pushHandler(
-                new \Monolog\Handler\RotatingFileHandler( $this->config['log_dir'] . 'api-dpd-consumer.log')
-            );
-        }
-
-        return $this->logger;
-    }
-
-    private function createGuzzleLoggingMiddleware(string $messageFormat)
-    {
-        return \GuzzleHttp\Middleware::log(
-            $this->getLogger(),
-            new \GuzzleHttp\MessageFormatter($messageFormat)
-        );
-    }
-
-    private function createLoggingHandlerStack(array $messageFormats)
-    {
-        $stack = \GuzzleHttp\HandlerStack::create();
-
-        collect($messageFormats)->each(function ($messageFormat) use ($stack) {
-            // We'll use unshift instead of push, to add the middleware to the bottom of the stack, not the top
-            $stack->unshift(
-                $this->createGuzzleLoggingMiddleware($messageFormat)
-            );
-        });
-
-        return $stack;
     }
 }
