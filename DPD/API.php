@@ -240,7 +240,7 @@ class API
 
         $jsonData = json_decode($response->getBody(), true);
         if($jsonData == null) throw new JSONParseException('Cannot decode: ' . $response->getBody());
-        if($response->getStatusCode() != 200 || $jsonData['status'] == 'err') {
+        if($response->getStatusCode() != 200 || (!empty($jsonData['status']) && $jsonData['status'] == 'err')) {
             throw new RequestErrorException('Error: ' . $jsonData['errlog'], $response->getStatusCode());
         }
 
